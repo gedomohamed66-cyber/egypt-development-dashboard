@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>مرصد التنمية | المحافظات المصرية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070b;--bg2:#0b0f16;--panel:#101722;--panel2:#0d141e;--line:#1d2633;--ink:#eef4ff;--muted:#a5b0c4;--accent:#1dd1c1;--accent2:#ffb454;--blue:#56a2ff;--danger:#ff6b6b;--success:#24d17e;--shadow:0 8px 26px rgba(0,0,0,.24)}
+*{box-sizing:border-box}
+html,body{margin:0;background:radial-gradient(circle at top right,#111827 0,#05070b 38%,#040507 100%);color:var(--ink);font-family:'Cairo',Tahoma,'Segoe UI',Arial,sans-serif}
+body{min-height:100vh}
+.app{display:flex;min-height:100vh}.sidebar{background:linear-gradient(180deg,#0c1320 0,#070b12 100%);width:285px;flex:0 0 285px;color:white;padding:28px 22px;position:sticky;top:0;height:100vh;border-left:1px solid #131b28}.brand{font-size:26px;font-weight:800;line-height:1.5}.brand span{color:var(--accent)}.sb-caption{color:#c7d1df;font-size:12px;margin-top:10px;line-height:2}.sb-block{border-top:1px solid #1c2635;margin-top:26px;padding-top:20px;font-size:13px;color:#d6deea;line-height:2}.pill-sb{display:inline-block;border:1px solid #2f4661;background:#0e1724;padding:3px 12px;border-radius:22px;margin:9px 0;color:#e7f5ff}.badge-note{display:inline-flex;align-items:center;gap:6px;background:rgba(29,209,193,.1);border:1px solid rgba(29,209,193,.3);color:#a5fff2;padding:5px 10px;border-radius:999px;font-size:11px;margin-top:12px}
+.main{min-width:0;flex:1;max-width:1700px;padding:28px 36px 54px}.eyebrow{font-size:12px;letter-spacing:1.1px;color:var(--accent);font-weight:800}.h1{font-size:30px;margin:8px 0 6px;font-weight:800}.lead{color:var(--muted);font-size:14px;margin-bottom:22px;line-height:1.95;max-width:930px}
+.toolbar{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:12px;background:rgba(11,15,22,.92);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:18px;align-items:end;box-shadow:var(--shadow)}.field label{display:block;color:#c3cee0;font-size:12px;font-weight:700;margin-bottom:8px}select,input{width:100%;border:1px solid #263142;background:#0f1722;border-radius:11px;padding:11px 12px;color:#f2f7ff;font:inherit;font-size:13px;outline:none}select:focus,input:focus{border-color:#3c9bff;box-shadow:0 0 0 3px rgba(62,153,255,.12)}button{cursor:pointer;font:inherit;border-radius:11px;border:1px solid #2c3747;background:#0f1722;color:#e7eef9;padding:11px 16px;font-size:13px;font-weight:700}button:hover{filter:brightness(1.08)}.primary{background:linear-gradient(135deg,#17c6b7,#0a8e84);color:#041018;border:0}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.kpi{border:1px solid var(--line);background:linear-gradient(180deg,#101824 0,#0b121b 100%);border-radius:16px;padding:18px 18px;box-shadow:var(--shadow)}.kpi .label{font-size:12px;color:var(--muted);margin-bottom:12px}.kpi .val{font-size:28px;font-weight:800;direction:ltr;text-align:right;line-height:1.2}.kpi .sub{font-size:11px;color:#90a1b8;margin-top:9px;min-height:19px}.kpi.special{border-top:4px solid var(--accent)}.kpi.avg{border-top:4px solid var(--accent2)}.kpi.delta{border-top:4px solid #56a2ff}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(330px,.85fr);gap:17px;margin-top:18px}.panel{background:linear-gradient(180deg,#0d141e 0,#0a1018 100%);border:1px solid var(--line);border-radius:18px;padding:21px;min-width:0;box-shadow:var(--shadow)}.panel h2{font-size:18px;margin:0 0 7px}.panel .description{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:15px}.panel-flex{display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap}.legend{display:flex;gap:14px;align-items:center;color:#b6c3d7;font-size:11px;margin:7px 0;flex-wrap:wrap}.circle{width:10px;height:10px;border-radius:50%;display:inline-block;background:#4f8cc6;margin-left:5px}.circle.sel{background:var(--accent)}.circle.avg{background:var(--accent2)}.avg-banner{margin-top:8px;background:rgba(255,180,84,.08);border:1px dashed rgba(255,180,84,.4);color:#ffd7a2;padding:9px 12px;border-radius:12px;font-size:12px}
+.chart-list{display:flex;flex-direction:column;gap:8px;height:500px;overflow-y:auto;padding-left:4px}.bar-row{display:grid;grid-template-columns:140px minmax(0,1fr) 88px;gap:10px;align-items:center;min-height:34px;font-size:12px}.bar-row .prov{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.track{background:#172130;border-radius:999px;height:14px;overflow:hidden;position:relative}.fill{height:100%;background:linear-gradient(90deg,#3c78c7,#67a7ff);border-radius:999px;transition:width .2s}.bar-row.selected .fill{background:linear-gradient(90deg,#00a39a,#20dbc9)}.bar-row.selected .prov{font-weight:800;color:#8efcf1}.bar-row.avg-row .fill{background:linear-gradient(90deg,#e29b2d,#ffd27d)}.bar-row.avg-row .prov{font-weight:800;color:#ffdca2}.number{direction:ltr;text-align:left;font-variant-numeric:tabular-nums;color:#becadd}
+.minmax{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}.info{padding:14px;border:1px solid #1b2735;background:#101824;border-radius:12px}.info small{display:block;color:var(--muted);font-size:11px;margin-bottom:8px}.info strong{font-size:18px}.ranking{font-size:40px;font-weight:800;color:var(--accent);margin:17px 0 4px}.ranking span{font-size:13px;font-weight:400;color:var(--muted)}.insight{border-right:3px solid var(--accent);background:#0e171b;margin-top:16px;border-radius:6px;padding:14px;font-size:13px;line-height:2}
+.tablewrap{overflow:auto;max-height:520px}table{border-collapse:collapse;width:100%;font-size:12px}th,td{border-bottom:1px solid #16202d;text-align:right;padding:11px 12px;white-space:nowrap}thead th{position:sticky;top:0;background:#111a26;color:#c5d3e8;z-index:1}tr.is-selected{background:#0d201f}tr.avg-row{background:#201810}tr:hover{background:#111c2b;cursor:pointer}
+.secondary{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:17px}.compare-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.scatter{margin-top:18px;width:100%;height:340px;display:block}.dot{cursor:pointer}.dot:hover{stroke:#eef4ff;stroke-width:2}.axistext{font-size:11px;fill:#aab8cb}.avgline{stroke:#ffb454;stroke-dasharray:6 6;stroke-width:1.4;opacity:.8}.avglabel{font-size:11px;fill:#ffd7a1}.tooltip{font-size:11px;color:#93a5be;margin:5px}.notice{margin-top:20px;border:1px solid rgba(255,180,84,.22);background:rgba(255,180,84,.07);padding:14px 17px;border-radius:14px;font-size:12px;line-height:2;color:#f3d69f}.footer{font-size:11px;color:#90a1b8;margin-top:16px;line-height:2}.small-badge{display:inline-block;background:#131d2a;border:1px solid #223146;color:#bcd0ea;padding:4px 10px;border-radius:999px;font-size:11px}.avg-chip{display:inline-flex;align-items:center;gap:8px;background:#17120a;border:1px solid #3b2b12;color:#ffd7a1;padding:6px 12px;border-radius:999px;font-size:11px}
+@media(max-width:1250px){.cards{grid-template-columns:repeat(3,1fr)}.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar{width:230px;flex-basis:230px}}
+@media(max-width:860px){.sidebar{display:none}.main{padding:18px}.grid,.secondary,.cards{grid-template-columns:1fr}.h1{font-size:24px}}
+@media(max-width:560px){.toolbar,.compare-form{grid-template-columns:1fr}.bar-row{grid-template-columns:105px minmax(0,1fr) 64px}.chart-list{height:440px}.main{padding:12px}.kpi .val{font-size:25px}}
+.excel-panel{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(105deg,#0d211e,#0c1720);border:1px solid #276354;border-radius:18px;padding:15px 20px;margin:0 0 18px}.excel-copy{display:flex;gap:15px;align-items:center}.excel-icon{display:grid;place-items:center;background:#107c41;color:white;border-radius:11px;font-size:27px;font-weight:800;width:49px;height:52px;flex:none;font-family:Arial}.excel-copy strong{font-size:15px}.excel-sub{color:#bfcdca;font-size:11px;max-width:660px;line-height:1.85}.excel-status{color:#7fe5bb;font-size:11px;margin-top:3px}.excel-status.error{color:#ff9999}.excel-actions{display:flex;gap:9px;flex-wrap:wrap}.excel-btn,.excel-upload{display:inline-block;border:1px solid #2c8e61;background:#113b29;border-radius:11px;color:#e9fff1;padding:10px 14px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;cursor:pointer}.excel-upload{background:#1a8b58;border-color:#1a8b58}.excel-reset{background:transparent;font-size:11px;padding:9px}.all-data-pill{font-size:12px;color:#9cedbe}.all-data-message{font-size:12px;color:#bde8cf;padding:12px 16px;background:#0e241d;border:1px solid #235340;border-radius:12px;margin:15px 0}@media(max-width:600px){.excel-panel,.excel-actions{display:flex;flex-direction:column;align-items:stretch}.excel-copy{align-items:flex-start}}
+</style>
+<style>
+.composite-intro{margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.composite-intro h2{font-size:23px;margin:0 0 5px}.composite-intro p{margin:0;color:#9bacc3;font-size:13px}.composite-grid{display:grid;grid-template-columns:1.2fr .9fr;gap:17px;margin-top:16px}.composite-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:15px}.composite-stat{background:#101c28;border:1px solid #223143;border-radius:13px;padding:15px}.composite-stat small{color:#9fb1c8;font-size:11px}.composite-stat strong{display:block;font-size:23px;color:#f4f7fe;direction:ltr;text-align:right}.composite-row{display:grid;grid-template-columns:135px minmax(0,1fr) 75px 75px;align-items:center;gap:10px;font-size:12px;padding:5px 0;border-bottom:1px solid #17212d;cursor:pointer}.composite-row.active{color:#50e8d7}.composite-row .cbar{background:#182433;border-radius:30px;height:13px;overflow:hidden}.composite-row .cbar span{display:block;background:linear-gradient(90deg,#2476af,#18cabb);height:100%;border-radius:30px}.composite-row .cbar span.warn-fill{background:linear-gradient(90deg,#7c5bd2,#26aab1)}.composite-n{direction:ltr;text-align:left;font-weight:700}.class-tag{font-size:10px;border:1px solid #34455a;background:#172434;border-radius:18px;padding:3px 7px;text-align:center;white-space:nowrap}.metric-breakdown{max-height:580px;overflow:auto}.metric-row{display:grid;grid-template-columns:minmax(150px,1.4fr) 75px minmax(80px,1fr) 45px;gap:8px;align-items:center;border-bottom:1px solid #1c2836;padding:9px 2px;font-size:11px}.metric-row .smalltrack{background:#172334;height:10px;border-radius:20px;overflow:hidden}.metric-row .smalltrack i{display:block;height:100%;border-radius:20px;background:#379cd6}.metric-row .score{text-align:left;direction:ltr;color:#90dcd5}.composite-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.composite-controls label{color:#adbed1;font-size:12px}.composite-controls select{max-width:250px}.composite-notes{border-right:3px solid #ffb454;background:#1e1810;border-radius:6px;font-size:12px;color:#f6dcb6;line-height:2;padding:12px;margin-top:15px}.methodology{color:#9fb1c8;font-size:11px;line-height:2;margin:12px 0}.total-chart{height:525px;overflow:auto}.sep-section{height:1px;background:#233041;margin:30px 0 20px}.selected-composite{font-size:13px;color:#c7d4e8;line-height:2}.selected-composite strong{color:#6ff2dd}.mix-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;color:#9fb1c8;font-size:11px}.mix-legend b{padding:1px 8px;background:#172637;border:1px solid #304458;border-radius:20px}.heatmap-wrap{overflow:auto;max-height:560px}.heatmap-table{border-collapse:separate;border-spacing:4px;font-size:10px;width:100%;min-width:1020px}.heatmap-table th{position:sticky;top:0;z-index:3;min-width:58px;white-space:normal;text-align:center;background:#121d2c}.heatmap-table th:first-child{position:sticky;right:0;z-index:4;min-width:125px}.heatmap-table td{padding:8px 4px;text-align:center;border-radius:5px;border:0;white-space:nowrap;color:#f5f9ff}.heatmap-table td:first-child{position:sticky;right:0;background:#101923;z-index:2;text-align:right;padding-right:10px}.heatmap-table tr.chosen td:first-child{color:#1dd1c1;font-weight:bold}.section-link{display:inline-block;color:#0d151d;background:#20d1be;padding:9px 15px;text-decoration:none;border-radius:9px;font-size:12px;font-weight:700;margin-bottom:16px}.section-link:hover{filter:brightness(1.08)}@media(max-width:1050px){.composite-grid{grid-template-columns:1fr}}@media(max-width:620px){.composite-stats{grid-template-columns:1fr}.composite-row{grid-template-columns:88px 1fr 52px 62px;gap:4px;font-size:10px}.metric-row{grid-template-columns:110px 50px 1fr 38px;font-size:10px}}
+</style><style>
+.advanced-nav{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}.advanced-nav a{background:#101b28;border:1px solid #27384d;border-radius:10px;padding:8px 13px;color:#cce3f2;text-decoration:none;font-size:12px}.advanced-nav a:hover{border-color:#1dd1c1;color:#1dd1c1}.analysis-head{margin:34px 0 15px;border-bottom:1px solid #24364b;padding-bottom:12px}.analysis-head h2{font-size:23px;margin:2px 0}.analysis-head p{color:#a7b5c9;font-size:12px}.adv-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin:14px 0}.adv-panel{background:#101823;border:1px solid #253346;border-radius:15px;padding:19px;min-width:0}.adv-panel h3{font-size:16px;margin:0 0 13px}.adv-description{color:#a6b5c8;font-size:12px;line-height:2;margin-bottom:12px}.adv-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:15px}.adv-toolbar label{font-size:12px;color:#c5d3e4}.adv-toolbar select{width:auto;min-width:150px}.adv-toolbar input[type=checkbox]{width:auto;accent-color:#1dd1c1;vertical-align:middle}.corr-scroll{overflow:auto}.corr-grid{display:grid;grid-template-columns:120px repeat(13, minmax(39px,1fr));gap:3px;min-width:820px;direction:rtl}.corr-cell{border:1px solid #26384c;border-radius:5px;text-align:center;padding:9px 0;font:11px Cairo,sans-serif;cursor:pointer;color:#fff}.corr-cell:hover{outline:2px solid #fcb850}.corr-head{font-size:10px;writing-mode:vertical-rl;text-align:center;height:110px;align-content:center;color:#d0dceb;background:#121f2e;padding:4px}.corr-row{font-size:11px;align-content:center;padding:5px;color:#d0dceb}.corr-cell.diagonal{opacity:.55}.result-insight{background:#0c2327;border-right:3px solid #1dd1c1;border-radius:7px;padding:12px;line-height:1.9;font-size:12px;color:#d3f1ed;margin-top:12px}.cluster-card{background:#141f2d;border:1px solid #2c4057;border-radius:11px;padding:14px;margin:9px 0}.cluster-card h4{margin:0 0 8px}.cluster-names{font-size:12px;color:#c9d7e6;line-height:2}.cluster-dot{width:11px;height:11px;display:inline-block;border-radius:50%;margin-left:8px}.mini-key{font-size:11px;color:#9fb2c9}.geo-chart{width:100%;height:auto;display:block;background:linear-gradient(155deg,#0c1522,#090e16);border-radius:14px;border:1px solid #21324a}.geo-chart circle{cursor:pointer;stroke:#0d1724;stroke-width:1.4;opacity:.9}.geo-chart circle:hover{stroke:white;stroke-width:2.7;opacity:1}.geo-chart text{font:11px Cairo,sans-serif;fill:#adc1d6}.geo-legend{display:flex;gap:11px;flex-wrap:wrap;font-size:11px;color:#cad5e6}.geo-legend b{display:inline-block;width:12px;height:12px;margin-left:5px;border-radius:3px}.radar-chart{max-width:680px;width:100%;display:block;margin:auto;min-height:320px}.rplot{width:100%;height:auto;display:block;min-height:220px}.dist-table{width:100%;font-size:11px}.dist-table td,.dist-table th{padding:10px 7px}.outlier-tag{color:#ffcc88}.adv-note{font-size:12px;line-height:2;background:#1f1a11;border:1px solid #634b28;padding:14px;border-radius:10px;color:#f6ddb4}.analysis-section{scroll-margin-top:18px}@media(max-width:1050px){.adv-grid{grid-template-columns:1fr}}@media(max-width:600px){.adv-panel{padding:11px}.adv-toolbar{gap:6px}}
+</style><style>
+.uni-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}.uni-card{background:#101c29;border:1px solid #253448;border-radius:13px;padding:15px;min-height:96px}.uni-card .lab{color:#9daec5;font-size:11px;margin-bottom:7px}.uni-card .val{font-size:22px;font-weight:800;color:#f3f7ff;direction:ltr;text-align:right}.uni-card .note{font-size:10px;color:#8d9db2}.uni-hist{width:100%;height:auto;max-height:390px}.uni-table-wrap{overflow:auto;max-height:440px}.uni-table{border-collapse:collapse;min-width:1100px;width:100%;font-size:11px}.uni-table th,.uni-table td{padding:9px 10px;border-bottom:1px solid #263340;text-align:right;white-space:nowrap}.uni-table th{color:#d4e2f5;background:#182331;position:sticky;top:0}.uni-table tr:hover{background:#13202c;cursor:pointer}.uni-table .active{background:#102a2e}.uni-chart-text{fill:#b7c5d8;font-size:12px;font-family:'Cairo',Tahoma,sans-serif}
+@media(max-width:880px){.uni-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){.uni-cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">مرصد <span>التنمية</span><br/>المحافظات المصرية</div>
+  <div class="sb-caption">لوحة معلومات تفاعلية مستقلة<br/>بتصميم داكن وخط Cairo</div>
+  <div class="badge-note">● يعرض متوسط الجمهورية داخل جميع الرسوم</div>
+  <div class="sb-block"><div>نطاق التحليل</div><span class="pill-sb">27 محافظة</span> <span class="pill-sb">13 مؤشرًا</span><p>اختر المؤشر والمحافظة، ثم استكشف المقارنات والترتيب ومتوسط الجمهورية وأوضاع المحافظات.</p></div>
+  <div class="sb-block">المصدر الأساسي<br/><strong>بيانات المقترح البحثي.xlsx</strong><br/><span style="font-size:11px">القيم كما وردت في الملف، مع إبقاء العلامات التحذيرية للمراجعة المنهجية.</span></div>
+  <div class="sb-block">فكرة المتوسط<br/><span style="font-size:11px">متوسط الجمهورية هنا = المتوسط الحسابي لقيم المحافظات المتاحة في كل مؤشر (غير مرجح بالسكان).</span></div>
+</aside>
+<main class="main">
+  <div class="eyebrow">SDG · GOVERNORATE INTELLIGENCE</div>
+  <h1 class="h1">لوحة مؤشرات التنمية بالمحافظات المصرية</h1>
+  <div class="lead">لوحة معلومات تفاعلية لمقارنة 27 محافظة مصرية عبر 13 مؤشرًا اقتصاديًا واجتماعيًا وصحيًا وخدميًا، مع إظهار <strong>متوسط الجمهورية</strong> داخل المؤشرات والرسوم البيانية.</div>
+
+  <a class="section-link" href="#composite">عرض التصنيف التنموي الشامل للمحافظات الـ27 ←</a><section class="toolbar">
+    <div class="field"><label for="metric">المؤشر محل التحليل</label><select id="metric"></select></div>
+    <div class="field"><label for="prov">المحافظة المحددة</label><select id="prov"></select></div>
+    <div class="field"><label for="sort">ترتيب المحافظات</label><select id="sort"><option value="desc">من الأعلى إلى الأدنى</option><option value="asc">من الأدنى إلى الأعلى</option><option value="name">أبجديًا</option></select></div>
+    <button id="export" class="primary">تصدير CSV</button>
+  </section>
+
+  <section class="excel-panel" id="excel-connection">
+    <div class="excel-copy"><span class="excel-icon">X</span><div><strong>مصدر البيانات · Excel</strong><div class="excel-sub">نزّل ملف البيانات، عدّل القيم، ثم ارفع الملف نفسه لتتحدث جميع التحليلات والخرائط والتصنيفات فورًا.</div><div class="excel-status" id="excel-status">البيانات الحالية: الملف الأساسي المدمج · 27 محافظة × 13 مؤشرًا</div></div></div>
+    <div class="excel-actions"><button type="button" id="excel-download" class="excel-btn">⬇ تحميل Excel</button><label class="excel-upload">⬆ تحديث من Excel <input id="excel-upload" type="file" accept=".xlsx,.xlsm" hidden/></label><button type="button" id="excel-reset" class="excel-reset">استعادة البيانات الأصلية</button></div>
+  </section>
+  <section class="cards">
+    <div class="kpi special"><div class="label">قيمة المحافظة المحددة</div><div id="k1" class="val">—</div><div id="k1s" class="sub"></div></div>
+    <div class="kpi avg"><div class="label">متوسط الجمهورية</div><div id="k2" class="val">—</div><div id="k2s" class="sub"></div></div>
+    <div class="kpi delta"><div class="label">الفارق عن متوسط الجمهورية</div><div id="k5" class="val">—</div><div id="k5s" class="sub"></div></div>
+    <div class="kpi"><div class="label">القيمة الأعلى بين المحافظات</div><div id="k3" class="val">—</div><div id="k3s" class="sub"></div></div>
+    <div class="kpi"><div class="label">القيمة الأدنى بين المحافظات</div><div id="k4" class="val">—</div><div id="k4s" class="sub"></div></div>
+  </section>
+
+  <section class="grid">
+    <div class="panel">
+      <div class="panel-flex">
+        <div>
+          <h2>المقارنة بين المحافظات</h2>
+          <div id="chartdesc" class="description"></div>
+        </div>
+        <div>
+          <div class="legend"><span><span class="circle"></span>المحافظات</span><span><span class="circle sel"></span>المحافظة المختارة</span><span><span class="circle avg"></span>متوسط الجمهورية</span></div>
+          <div id="avgchip" class="avg-chip">متوسط الجمهورية: —</div>
+        </div>
+      </div>
+      <div id="avgbanner" class="avg-banner">—</div>
+      <div id="bars" class="chart-list"></div>
+    </div>
+    <div class="panel">
+      <h2>بطاقة المحافظة</h2>
+      <div class="description">موقع المحافظة ضمن توزيع المؤشر على مستوى الجمهورية</div>
+      <div id="rank" class="ranking">—</div>
+      <div id="rankdetail" class="description"></div>
+      <div class="minmax">
+        <div class="info"><small>أعلى قيمة</small><strong id="maxVal"></strong><div class="tooltip" id="maxName"></div></div>
+        <div class="info"><small>أقل قيمة</small><strong id="minVal"></strong><div class="tooltip" id="minName"></div></div>
+      </div>
+      <div id="insight" class="insight"></div>
+      <div id="yr" class="footer"></div>
+    </div>
+  </section>
+
+  <section class="secondary">
+    <div class="panel">
+      <div class="panel-flex"><div><h2>استكشاف العلاقة بين مؤشرين</h2><div class="description">اختر محورين لعرض التوزيع المقارن للمحافظات. الضغط على نقطة يحدد المحافظة. تظهر خطوط متقطعة تمثل متوسط الجمهورية لكل محور.</div></div><span class="small-badge">المتوسط ظاهر على المحورين</span></div>
+      <div class="compare-form">
+        <div class="field"><label>المحور الأفقي</label><select id="xmetric"></select></div>
+        <div class="field"><label>المحور الرأسي</label><select id="ymetric"></select></div>
+      </div>
+      <svg id="scatter" class="scatter" role="img" aria-label="مخطط تشتت المحافظات"></svg>
+      <div class="tooltip">التقاطع بين الخطين المتقطعين يمثل متوسط الجمهورية على كل محور.</div>
+    </div>
+    <div class="panel">
+      <div class="panel-flex"><div><h2>جدول المحافظات</h2><div class="description">جدول تفاعلي للقيم وترتيبها حسب المؤشر الحالي، مع سطر مستقل لمتوسط الجمهورية</div></div><div class="field"><input id="search" placeholder="ابحث عن محافظة..." aria-label="بحث محافظة"/></div></div>
+      <div class="tablewrap"><table><thead><tr><th>المحافظة</th><th>القيمة</th><th>الترتيب</th></tr></thead><tbody id="tbody"></tbody></table></div>
+    </div>
+  </section>
+
+  
+<div class="sep-section"></div>
+<section id="composite">
+  <div class="advanced-nav"><a href="#advanced">الانتقال إلى التحليلات المتقدمة: الارتباط، العناقيد، الخريطة، البصمة، التشتت</a></div><div class="composite-intro"><div><div class="eyebrow">COMPOSITE DEVELOPMENT INDEX</div><h2>التصنيف التنموي الشامل للمحافظات</h2><p>دمج المؤشرات الـ13 في درجة معيارية مركبة من 100، مع إمكانية استكشاف الترتيب ومساهمات المؤشرات.</p></div><div class="composite-controls"><input type="hidden" id="comp-mode" value="all"/><span class="all-data-pill">جميع قيم المحافظات الـ27 مُدرجة في التحليل</span><button id="comp-export">تصدير التصنيف CSV</button></div></div>
+  <div class="composite-notes"><strong>مهم للبحث العلمي:</strong> ده تصنيف استكشافي محسوب من بيانات الملف، <strong>مش تصنيف رسمي للمحافظات</strong>. تم تحويل كل مؤشر إلى مقياس من 0 إلى 100 بطريقة Min–Max عبر المحافظات، وعكس اتجاه مؤشرات الحرمان/المخاطر (مثل الفقر والبطالة والوفيات)، ثم حساب متوسط المؤشرات بأوزان متساوية. وقد تتأثر النتائج بالقيم المتطرفة وبالقيم التي تحتاج مراجعة.</div>
+  <div class="composite-grid">
+    <div class="panel"><h2>الترتيب العام للمحافظات</h2><div class="description">الأعلى درجة = وضع أفضل نسبيًا ضمن عينة المحافظات. انقر أي محافظة لعرض تفاصيلها. الفئات موزعة إلى خمس مجموعات حسب الترتيب النسبي.</div><div class="composite-stats"><div class="composite-stat"><small>متوسط الدرجات المركبة</small><strong id="comp-mean">—</strong></div><div class="composite-stat"><small>أعلى محافظة</small><strong id="comp-best">—</strong></div><div class="composite-stat"><small>المحافظة المحددة</small><strong id="comp-focus">—</strong></div></div><div class="total-chart" id="comp-bars"></div></div>
+    <div class="panel"><h2>بطاقة التقييم المتكامل</h2><div id="comp-summary" class="selected-composite"></div><h2 style="margin-top:18px;font-size:15px">الدرجات المعيارية للمؤشرات الـ13</h2><div class="description">القيم من 0 إلى 100: الأعلى أفضل بعد مراعاة اتجاه المؤشر.</div><div id="comp-detail" class="metric-breakdown"></div></div>
+  </div>
+  <div class="panel" style="margin-top:18px"><h2>مصفوفة الأداء المقارن لجميع المحافظات والمؤشرات</h2><div class="description">كل خلية تمثل درجة المؤشر المعيارية، لا القيمة الأصلية. الأخضر أفضل نسبيًا والأحمر أضعف نسبيًا. مرر المؤشر فوق الخلية لرؤية القيمة الأصلية وسنة البيانات.</div><div id="comp-heatmap" class="heatmap-wrap"></div></div>
+  <div class="methodology">ملاحظات: جميع المحافظات الـ27 والمؤشرات الـ13 مشمولة في التحليل المركب دون استبعاد. يتطلب رفع أي ملف معدل اكتمال جميع القيم. التصنيف استكشافي وليس معيارًا رسميًا. درجة 100 في مؤشر تعني الأفضل داخل هذه العينة، وليست تحقيقًا لهدف التنمية المستدامة أو المستهدف الوطني.</div>
+</section>
+
+
+<section class="analysis-section" id="univariate">
+ <div class="analysis-head"><div class="eyebrow">UNIVARIATE ANALYSIS</div><h2>التحليل أحادي المتغير | Univariate Analysis</h2><p>ملخص شامل للتوزيع الوصفي لكل مؤشر بين المحافظات المصرية، مع المتوسط الحسابي والوسيط والمنوال والتشتت وشكل التوزيع.</p></div>
+ <div class="adv-toolbar"><label for="uni-ind">اختر المؤشر</label><select id="uni-ind"></select><label for="uni-bins">عدد فئات المدرج</label><select id="uni-bins"><option value="5">5 فئات</option><option value="6" selected>6 فئات</option><option value="8">8 فئات</option><option value="10">10 فئات</option></select></div>
+ <div id="uni-stats" class="uni-cards"></div>
+ <div class="adv-grid" style="margin-top:18px"><div class="adv-panel"><h3>المدرج التكراري | Histogram</h3><div class="adv-description">توزيع قيم المحافظات؛ الخط البرتقالي للمتوسط والخط التركوازي للوسيط</div><svg id="uni-hist" class="uni-hist" viewBox="0 0 780 355" role="img" aria-label="المدرج التكراري للمؤشر"></svg><div id="uni-legend" class="mini-key"></div></div><div class="adv-panel"><h3>وصف التوزيع ونتيجة اختبار الاعتدال</h3><div id="uni-reading" class="result-insight"></div><div id="uni-mode-note" class="adv-note" style="margin-top:12px"></div></div></div>
+ <div class="adv-panel" style="margin-top:18px"><h3>جدول الإحصاءات الوصفية للمؤشرات الـ13</h3><div class="adv-description">الاحتساب يتم على جميع المحافظات المتاحة أو بعد استبعاد القيم المعلمة بالمراجعة، وفق اختيارك في التحليلات المتقدمة.</div><div class="uni-table-wrap"><table class="uni-table"><thead><tr><th>المؤشر</th><th>العدد</th><th>المتوسط Mean</th><th>الوسيط Median</th><th>المنوال Mode</th><th>الانحراف المعياري</th><th>معامل الاختلاف</th><th>الالتواء</th><th>التفرطح الزائد</th></tr></thead><tbody id="uni-table-body"></tbody></table></div></div>
+ <div class="methodology">ملاحظة منهجية: المنوال يُعرض فقط إذا تكررت قيمة فعلية مرتين على الأقل، وقد توجد أكثر من قيمة منوالية. وبالنسبة للمتغيرات المستمرة غالبًا ما يكون المنوال غير دال عند عدم تكرار القياسات. اختبار Jarque–Bera تقريبي، وخاصةً مع 27 محافظة أو أقل؛ لا يُغني عن Shapiro–Wilk في التحليل الإحصائي النهائي.</div>
+</section>
+
+<section class="analysis-section" id="advanced">
+ <div class="analysis-head"><div class="eyebrow">ADVANCED DEVELOPMENT ANALYTICS</div><h2>التحليلات الإحصائية والمكانية المتقدمة</h2><p>خمسة تحليلات مترابطة لقراءة التفاوتات والأنماط التنموية بين المحافظات المصرية.</p></div>
+ <nav class="advanced-nav"><a href="#univariate">التحليل أحادي المتغير</a><a href="#correlation">مصفوفة الارتباط</a><a href="#clustering">التحليل العنقودي</a><a href="#geomap">الخريطة التفاعلية</a><a href="#profile">البصمة التنموية</a><a href="#dispersion">التشتت والقيم المتطرفة</a></nav>
+ <input type="checkbox" id="adv-exclude" style="display:none" aria-hidden="true" disabled/><div class="all-data-message">كل التحليلات الحالية تستخدم جميع القيم الرقمية في ملف Excel، من غير استبعاد أي محافظة أو مؤشر.</div>
+</section>
+<section class="analysis-section" id="correlation"><div class="analysis-head"><h2>1 ـ مصفوفة الارتباط بين المؤشرات</h2><p>معامل ارتباط بيرسون بين كل زوج من المؤشرات؛ انقر على خلية لعرض قوة واتجاه العلاقة.</p></div><div class="adv-panel"><div class="adv-description">الألوان التركوازية = ارتباط موجب، والألوان الوردية = ارتباط سالب. القيم تحسب من المحافظات التي تتوافر لها القيمتان معًا؛ ولا تعبر عن علاقة سببية.</div><div id="corr-grid" class="corr-scroll"></div><div id="corr-detail" class="result-insight"></div></div></section>
+<section class="analysis-section" id="clustering"><div class="analysis-head"><h2>2 ـ التحليل العنقودي للمحافظات</h2><p>تجميع إحصائي طبقًا لتشابه المؤشرات الـ13 جميعًا، وليس مجرد ترتيب المؤشر المركب.</p></div><div class="adv-toolbar"><label for="cluster-k">عدد المجموعات:</label><select id="cluster-k"><option value="3">3 مجموعات</option><option value="4" selected>4 مجموعات</option><option value="5">5 مجموعات</option><option value="6">6 مجموعات</option></select></div><div class="adv-grid"><div class="adv-panel"><h3>تكوين المجموعات</h3><div id="cluster-cards"></div></div><div class="adv-panel"><h3>انتماء المحافظة</h3><div id="cluster-selected" class="result-insight"></div><div class="adv-note" style="margin-top:14px">المنهجية: K-Means بمسافة إقليدية بعد توحيد المتغيرات (Z-score)، وتعويض القيم غير المتاحة بوسيط المؤشر. التهيئة ثابتة لضمان قابلية تكرار النتيجة؛ التجميع استكشافي وغير سببي.</div></div></div></section>
+<section class="analysis-section" id="geomap"><div class="analysis-head"><h2>3 ـ الخريطة التفاعلية للمحافظات</h2><p>استكشاف مكاني لقيم المؤشرات والدرجة التنموية المركبة؛ انقر على أي نقطة لتحديد المحافظة.</p></div><div class="adv-grid"><div class="adv-panel"><div class="adv-toolbar"><label for="map-ind">المتغير المعروض:</label><select id="map-ind"><option value="composite">التصنيف التنموي المركب</option></select></div><svg id="geo-svg" class="geo-chart" viewBox="0 0 680 560" role="img" aria-label="خريطة نقطية تخطيطية لمواقع المحافظات المصرية"></svg><div class="mini-key">المواضع الجغرافية تخطيطية وتقريبية لمراكز المحافظات، وليست حدودًا إدارية رسمية.</div></div><div class="adv-panel"><h3>قراءة الخريطة</h3><div id="map-legend" class="geo-legend"></div><div id="map-selected" class="result-insight"></div><div class="adv-note" style="margin-top:14px">تمثيل جغرافي نقطي تقريبي وليس خريطة حدود إدارية (Choropleth). يستخدم لاستكشاف الفروق المكانية ولا يصلح لقياس المساحات أو المسافات الدقيقة.</div></div></div></section>
+<section class="analysis-section" id="profile"><div class="analysis-head"><h2>4 ـ البصمة التنموية للمحافظة</h2><p>مقارنة الأداء النسبي عبر جميع المؤشرات، بعد توحيد الاتجاه بحيث القيمة الأعلى تعني أداء تنمويًا أفضل.</p></div><div class="adv-grid"><div class="adv-panel"><div class="adv-toolbar"><label for="profile-other">مقارنة مع:</label><select id="profile-other"><option value="average">متوسط المحافظات</option></select></div><svg id="radar-svg" class="radar-chart" viewBox="0 0 680 460" role="img" aria-label="رسم راداري للبصمة التنموية"></svg></div><div class="adv-panel"><h3>قراءة البصمة التنموية</h3><div id="radar-summary" class="result-insight"></div><div class="adv-description">القيم من 0 إلى 100 وفق تطبيع Min–Max داخل عينة المحافظات، وهي نسب أداء نسبي وليست المعدلات الأصلية.</div><div id="radar-breakdown"></div></div></div></section>
+<section class="analysis-section" id="dispersion"><div class="analysis-head"><h2>5 ـ التشتت والقيم المتطرفة</h2><p>استعراض توزيع المؤشر باستخدام الوسيط والربيعات والانحراف المعياري ومعامل الاختلاف وقاعدة 1.5×IQR.</p></div><div class="adv-panel"><div class="adv-toolbar"><label for="dist-ind">المؤشر:</label><select id="dist-ind"></select></div><svg id="box-svg" class="rplot" viewBox="0 0 750 255" role="img" aria-label="مخطط صندوقي لانتشار القيم"></svg><div id="dist-stats" class="result-insight"></div><div id="dist-outliers" class="adv-description" style="margin-top:10px"></div></div></section>
+<div class="notice"><strong>تنبيه منهجي:</strong> تعرض اللوحة القيم الواردة في ملف البيانات المرفق، بما في ذلك بعض القيم التي تظهر معها علامة ⚠ للمراجعة. <strong>متوسط الجمهورية</strong> في هذه اللوحة محسوب كمتوسط حسابي بسيط لقيم المحافظات المتاحة في كل مؤشر، وليس متوسطًا مرجحًا بالسكان. السنوات تختلف باختلاف المؤشر.</div>
+  <div class="footer">لوحة مستقلة تعمل دون اتصال بالإنترنت · تصميم داكن بخط Cairo · مصدر: ملف بيانات المقترح البحثي</div>
+</main>
+</div>
+<script>
+const DATA={"metrics": [{"name": "الفقر الوطني", "desc": "نسبة السكان دون خط الفقر الوطني", "percent": true, "year": "2017/2018", "goal": 1, "better": -1}, {"name": "سوء التغذية للأطفال", "desc": "نسبة انتشار سوء التغذية بين الأطفال دون الخامسة", "percent": true, "year": "2021", "goal": 2, "better": -1}, {"name": "وفيات الحوادث المرورية", "desc": "معدل الوفيات بسبب حوادث المرور لكل 100 ألف نسمة", "percent": false, "year": "2020", "goal": 3, "better": -1}, {"name": "وفيات حديثي الولادة", "desc": "معدل وفيات حديثي الولادة لكل 1000 مولود حي", "percent": false, "year": "2021", "goal": 3, "better": -1}, {"name": "الأطباء البشريون", "desc": "معدل الأطباء البشريين لكل 10000 نسمة", "percent": false, "year": "2017", "goal": 3, "better": 1}, {"name": "الأمية", "desc": "معدل الأمية من عمر 10 سنوات فأكثر", "percent": true, "year": "2021", "goal": 4, "better": -1}, {"name": "زواج الفتيات 15–17", "desc": "نسبة السيدات بعمر 15–17 سنة والمتزوجات حاليًا", "percent": true, "year": "2021", "goal": 5, "better": -1}, {"name": "مياه الشرب المحسنة", "desc": "نسبة الأسر لديها مصدر محسن لمياه الشرب", "percent": true, "year": "2021", "goal": 6, "better": 1}, {"name": "الاستفادة من الكهرباء", "desc": "نسبة الأسر المستفيدة من خدمات الكهرباء", "percent": true, "year": "2017", "goal": 7, "better": 1}, {"name": "البطالة", "desc": "معدل البطالة", "percent": true, "year": "2021", "goal": 8, "better": -1}, {"name": "الإناث في قوة العمل", "desc": "نسبة الإناث في قوة العمل", "percent": true, "year": "2021", "goal": 8, "better": 1}, {"name": "سكان المناطق العشوائية غير الآمنة", "desc": "نسبة سكان المناطق العشوائية غير الآمنة", "percent": true, "year": "2015", "goal": 11, "better": -1}, {"name": "استخدام الإنترنت", "desc": "نسبة الأفراد الذين يستخدمون الإنترنت من عمر 4 سنوات فأكثر", "percent": true, "year": "2017", "goal": 17, "better": 1}], "records": [{"id": 1, "name": "القاهرة", "vals": [0.311, 0.111, 11.3, 12.0, 8.91, 0.13, 0.0, 0.999, 1.0, 0.137, 0.199, 0.029, 0.5132]}, {"id": 2, "name": "الإسكندرية", "vals": [0.218, 0.08, 11.6, 14.0, 7.93, 0.109, 0.0, 1.0, 1.0, 0.128, 0.188, 0.006, 0.4588]}, {"id": 3, "name": "بورسعيد", "vals": [0.076, 0.079, 0.9, 7.0, 9.49, 0.077, 0.031, 1.0, 0.97, 0.252, 0.338, 0.017, 0.5318]}, {"id": 4, "name": "السويس", "vals": [0.2, 0.124, 6.9, 17.0, 6.34, 0.112, 0.017, 1.0, 1.0, 0.133, 0.171, 0.007, 0.4672]}, {"id": 5, "name": "دمياط", "vals": [0.146, 0.063, 11.0, 14.0, 11.75, 0.148, 0.0, 1.0, 1.0, 0.189, 0.236, 0.003, 0.3943]}, {"id": 6, "name": "الدقهلية", "vals": [0.152, 0.077, 6.6, 20.0, 14.8, 0.17, 0.041, 0.996, 0.999, 0.025, 0.143, 0.004, 0.3181]}, {"id": 7, "name": "الشرقية", "vals": [0.243, 0.056, 2.7, 12.0, 10.91, 0.182, 0.024, 0.933, 0.999, 0.06, 0.171, 0.0, 0.2755]}, {"id": 8, "name": "القليوبية", "vals": [0.201, 0.158, 3.1, 17.0, 3.92, 0.145, 0.0, 0.919, 0.999, 0.095, 0.193, 0.003, 0.3377]}, {"id": 9, "name": "كفر الشيخ", "vals": [0.173, 0.078, 2.9, 15.0, 9.32, 0.211, 0.023, 0.998, 0.999, 0.027, 0.206, 0.008, 0.2622]}, {"id": 10, "name": "الغربية", "vals": [0.094, 0.058, 1.8, 9.0, 11.73, 0.162, 0.008, 0.982, 0.996, 0.102, 0.261, 0.004, 0.3329]}, {"id": 11, "name": "المنوفية", "vals": [0.26, 0.094, 2.4, 9.0, 15.76, 0.134, 0.007, 0.96, 1.0, 0.042, 0.226, 0.003, 0.2837]}, {"id": 12, "name": "البحيرة", "vals": [0.477, 0.066, 9.0, 17.0, 5.7, 0.217, 0.077, 0.997, 1.0, 0.036, 0.139, 0.001, 0.1951]}, {"id": 13, "name": "الإسماعيلية", "vals": [0.324, 0.052, 16.4, 10.0, 5.95, 0.132, 0.0, 1.0, 1.0, 0.096, 0.231, 0.154, 0.356]}, {"id": 14, "name": "الجيزة", "vals": [0.34, 0.085, 7.8, 23.0, 3.57, 0.166, 0.006, 0.901, 1.0, 0.094, 0.152, 0.004, 0.3531]}, {"id": 15, "name": "بني سويف", "vals": [0.344, 0.033, 1.6, 18.0, 4.24, 0.3, 0.078, 0.985, 1.0, 0.038, 0.222, 0.019, 0.1935]}, {"id": 16, "name": "الفيوم", "vals": [0.264, 0.06, 0.5, 20.0, 4.9, 0.262, 0.059, 0.999, 1.0, 0.036, 0.123, 0.0, 0.1914]}, {"id": 17, "name": "المنيا", "vals": [0.547, 0.057, 3.4, 21.0, 6.23, 0.222, 0.007, 0.991, 1.0, 0.033, 0.164, 0.002, 0.1702]}, {"id": 18, "name": "أسيوط", "vals": [0.667, 0.064, 5.5, 17.0, 8.85, 0.221, 0.012, 0.998, 1.0, 0.034, 0.108, 0.006, 0.1998]}, {"id": 19, "name": "سوهاج", "vals": [0.596, 0.074, 5.0, 28.0, 6.16, 0.25, 0.024, 0.985, 1.0, 0.03, 0.071, 0.004, 0.2046]}, {"id": 20, "name": "قنا", "vals": [0.412, 0.061, 3.9, 19.0, 3.79, 0.198, 0.022, 0.995, 1.0, 0.016, 0.067, 0.01, 0.231]}, {"id": 21, "name": "اسوان", "vals": [0.462, 0.112, 9.0, 13.0, 5.38, 0.156, 0.009, 1.0, 1.0, 0.05, 0.124, 0.008, 0.2839]}, {"id": 22, "name": "الأقصر", "vals": [0.553, 0.072, 7.2, 12.0, 5.1, 0.171, 0.028, 0.998, 1.0, 0.067, 0.098, 0.014, 0.2617]}, {"id": 23, "name": "البحر الأحمر", "vals": [0.267, 0.076, 31.0, 8.0, 10.98, 0.058, 0.0, 0.995, 0.98, 0.236, 0.183, 0.026, 0.4677]}, {"id": 24, "name": "الوادي الجديد", "vals": [0.25, 0.02, 11.3, 11.0, 10.44, 0.078, 0.0, 1.0, 1.0, 0.142, 0.305, 0.047, 0.3838]}, {"id": 25, "name": "مطروح", "vals": [0.233, 0.05, 16.4, 11.0, 21.73, 0.334, 0.032, 0.974, 0.99, 0.049, 0.061, 0.002, 0.198]}, {"id": 26, "name": "شمال سيناء", "vals": [0.384, 0.197, 3.7, 16.4, 8.9, 0.223, 0.016, 0.98, 0.98, 0.5295, 0.29, 0.0, 0.2477]}, {"id": 27, "name": "جنوب سيناء", "vals": [0.179, 0.268, 72.3, 19.5, 37.75, 0.15, 0.015, 0.965, 0.95, 0.336, 0.299, 0.055, 0.4447]}], "flags": {"البحر الأحمر": [0], "الوادي الجديد": [0], "مطروح": [0], "شمال سيناء": [0, 1, 3, 5, 6, 7, 9, 10], "جنوب سيناء": [0, 1, 3, 6]}};
+const M=DATA.metrics,R=DATA.records,FLAGS=DATA.flags;
+const $=id=>document.getElementById(id);
+let selected=0, province=0, ordering='desc',xind=0,yind=12,search='';
+function option(text,value){const o=document.createElement('option');o.textContent=text;o.value=value;return o;}
+M.forEach((m,i)=>{['metric','xmetric','ymetric'].forEach(id=>$(id).append(option(`${i+1}. ${m.name}`,i)));});
+R.forEach((r,i)=>$('prov').append(option(r.name,i)));
+$('metric').value='0';$('xmetric').value='0';$('ymetric').value='12';
+$('metric').onchange=e=>{selected=+e.target.value;draw();};
+$('prov').onchange=e=>{province=+e.target.value;draw();};
+$('sort').onchange=e=>{ordering=e.target.value;draw();};
+$('xmetric').onchange=e=>{xind=+e.target.value;drawScatter();};
+$('ymetric').onchange=e=>{yind=+e.target.value;drawScatter();};
+$('search').oninput=e=>{search=e.target.value.trim();drawTable();};
+function fmt(v,i){if(v===null||!Number.isFinite(v))return 'غير متاح';return M[i].percent?(v*100).toLocaleString('ar-EG',{maximumFractionDigits:2})+'%':v.toLocaleString('ar-EG',{maximumFractionDigits:2});}
+function fmtDiff(v,i){if(v===null||!Number.isFinite(v))return 'غير متاح';const abs=Math.abs(v);const t=M[i].percent?(abs*100).toLocaleString('ar-EG',{maximumFractionDigits:2})+'%':abs.toLocaleString('ar-EG',{maximumFractionDigits:2});return `${v>=0?'+':'−'}${t}`;}
+function points(i){return R.map((r,idx)=>({r,idx,v:r.vals[i]})).filter(o=>Number.isFinite(o.v));}
+function averageOf(i){const p=points(i); return p.length ? p.reduce((x,y)=>x+y.v,0)/p.length : null;}
+function ordered(i){let a=points(i);if(ordering==='name')a.sort((a,b)=>a.r.name.localeCompare(b.r.name,'ar'));else a.sort((a,b)=>ordering==='desc'?b.v-a.v:a.v-b.v);return a;}
+function warn(r,i){return (FLAGS[r.name]||[]).includes(i);}
+function draw(){
+  const idx=selected, m=M[idx],p=R[province],a=points(idx),vals=a.map(z=>z.v),avg=averageOf(idx),hi=[...a].sort((a,b)=>b.v-a.v)[0],lo=[...a].sort((a,b)=>a.v-b.v)[0];
+  const rank=[...a].sort((a,b)=>m.better*(b.v-a.v)).findIndex(z=>z.idx===province)+1;
+  const delta=(Number.isFinite(p.vals[idx]) && Number.isFinite(avg))? p.vals[idx]-avg : null;
+  $('k1').textContent=fmt(p.vals[idx],idx)+(warn(p,idx)?' ⚠':''); $('k1s').textContent=p.name;
+  $('k2').textContent=fmt(avg,idx); $('k2s').textContent=`متوسط الجمهورية من ${a.length} محافظة`;
+  $('k5').textContent=fmtDiff(delta,idx); $('k5s').textContent=Number.isFinite(delta)?(delta>=0?'أعلى من المتوسط':'أقل من المتوسط'):'—';
+  $('k3').textContent=fmt(hi.v,idx); $('k3s').textContent=hi.r.name;
+  $('k4').textContent=fmt(lo.v,idx); $('k4s').textContent=lo.r.name;
+  $('chartdesc').textContent=`${m.desc} · سنة البيانات ${m.year} · الهدف ${m.goal}`;
+  $('avgchip').textContent=`متوسط الجمهورية: ${fmt(avg,idx)}`;
+  $('avgbanner').textContent=`للمؤشر الحالي (${m.name}) يبلغ متوسط الجمهورية ${fmt(avg,idx)}، ويظهر داخل المقارنة البيانية والجدول.`;
+  $('rank').innerHTML=rank?`${rank} <span>من ${a.length} محافظة (الأفضل أولًا)</span>`:'غير متاح';
+  $('rankdetail').textContent=`الترتيب حسب ${m.better===1?'القيمة الأعلى بوصفها الأفضل':'القيمة الأدنى بوصفها الأفضل'}`;
+  $('maxVal').textContent=fmt(hi.v,idx); $('maxName').textContent=hi.r.name;
+  $('minVal').textContent=fmt(lo.v,idx); $('minName').textContent=lo.r.name;
+  $('insight').textContent = Number.isFinite(delta)
+    ? `${p.name}: ${fmt(p.vals[idx],idx)}، ${delta>=0?'أعلى':'أقل'} من متوسط الجمهورية بمقدار ${fmt(Math.abs(delta),idx)}. ${warn(p,idx)?'⚠ القيمة واردة في ملف البيانات لكنها تحتاج مراجعة مصدرها.':''}`
+    : `${p.name}: لا توجد قيمة متاحة للمؤشر الحالي.`;
+  $('yr').textContent=`سنة المؤشر: ${m.year} · نوع القياس: ${m.percent?'نسبة مئوية':'معدل'} · متوسط الجمهورية معروض كمؤشر مرجعي`;
+  const max=Math.max(...vals,0.0001);
+  $('bars').replaceChildren();
+  const chartItems=[...ordered(idx).map(o=>({...o,isAverage:false})),{r:{name:'متوسط الجمهورية'},v:avg,isAverage:true,idx:-1}];
+  if(ordering==='asc') chartItems.sort((a,b)=>a.v-b.v);
+  else if(ordering==='desc') chartItems.sort((a,b)=>b.v-a.v);
+  else chartItems.sort((a,b)=>a.r.name.localeCompare(b.r.name,'ar'));
+  chartItems.forEach(o=>{
+    const div=document.createElement('div');
+    div.className='bar-row'+(o.isAverage?' avg-row':o.idx===province?' selected':'');
+    div.innerHTML=`<span class="prov"></span><div class="track"><div class="fill" style="width:${Math.max(1,o.v/max*100)}%"></div></div><span class="number"></span>`;
+    div.querySelector('.prov').textContent=o.r.name;
+    div.querySelector('.number').textContent=fmt(o.v,idx)+(!o.isAverage&&warn(o.r,idx)?' ⚠':'');
+    if(!o.isAverage){div.title='اضغط لتحديد '+o.r.name;div.style.cursor='pointer';div.onclick=()=>selectProv(o.idx);}
+    $('bars').appendChild(div);
+  });
+  drawTable(); drawScatter();
+}
+function selectProv(i){province=i;$('prov').value=i;draw();}
+function drawTable(){
+  const a=ordered(selected),m=M[selected],ranked=[...points(selected)].sort((a,b)=>m.better*(b.v-a.v)),q=search,avg=averageOf(selected);
+  $('tbody').replaceChildren();
+  const tableItems=[...a.filter(o=>o.r.name.includes(q)).map(o=>({...o,isAverage:false})),{r:{name:'متوسط الجمهورية'},v:avg,isAverage:true,idx:-1}];
+  if(ordering==='asc') tableItems.sort((a,b)=>a.v-b.v);
+  else if(ordering==='desc') tableItems.sort((a,b)=>b.v-a.v);
+  else tableItems.sort((a,b)=>a.r.name.localeCompare(b.r.name,'ar'));
+  tableItems.forEach(o=>{
+    const tr=document.createElement('tr');
+    if(o.isAverage)tr.className='avg-row';else if(o.idx===province)tr.className='is-selected';
+    const rank=o.isAverage?'—':String(ranked.findIndex(r=>r.idx===o.idx)+1);
+    [o.r.name,fmt(o.v,selected)+(!o.isAverage&&warn(o.r,selected)?' ⚠':''),rank].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.appendChild(td)});
+    if(!o.isAverage)tr.onclick=()=>selectProv(o.idx);
+    $('tbody').appendChild(tr);
+  });
+}
+function drawScatter(){
+  const svg=$('scatter'),W=640,H=340,left=70,right=28,top=24,bottom=52;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.replaceChildren();
+  const xs=points(xind).map(z=>z.v),ys=points(yind).map(z=>z.v); let xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys),ymax=Math.max(...ys); if(xmax===xmin)xmax=xmin+1; if(ymax===ymin)ymax=ymin+1;
+  const x=v=>left+(v-xmin)/(xmax-xmin)*(W-left-right), y=v=>top+(1-(v-ymin)/(ymax-ymin))*(H-top-bottom);
+  const xav=averageOf(xind), yav=averageOf(yind);
+  const NS='http://www.w3.org/2000/svg';
+  function el(tag,attrs,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]); if(text!==undefined)e.textContent=text; svg.appendChild(e); return e;}
+  for(let i=0;i<5;i++){ let xx=left+(W-left-right)*i/4, yy=top+(H-top-bottom)*i/4; el('line',{x1:xx,y1:top,x2:xx,y2:H-bottom,stroke:'#182230'}); el('line',{x1:left,y1:yy,x2:W-right,y2:yy,stroke:'#182230'}); el('text',{x:xx,y:H-22,'text-anchor':'middle',class:'axistext'},fmt(xmin+(xmax-xmin)*i/4,xind)); el('text',{x:52,y:yy+4,'text-anchor':'end',class:'axistext'},fmt(ymax-(ymax-ymin)*i/4,yind)); }
+  el('line',{x1:left,y1:top,x2:left,y2:H-bottom,stroke:'#61728b'}); el('line',{x1:left,y1:H-bottom,x2:W-right,y2:H-bottom,stroke:'#61728b'});
+  if(Number.isFinite(xav)){ el('line',{x1:x(xav),y1:top,x2:x(xav),y2:H-bottom,class:'avgline'}); el('text',{x:x(xav)+6,y:top+14,class:'avglabel'},'متوسط الجمهورية'); }
+  if(Number.isFinite(yav)){ el('line',{x1:left,y1:y(yav),x2:W-right,y2:y(yav),class:'avgline'}); el('text',{x:W-right-6,y:y(yav)-7,'text-anchor':'end',class:'avglabel'},'متوسط الجمهورية'); }
+  if(Number.isFinite(xav)&&Number.isFinite(yav)){
+    const c=el('circle',{cx:x(xav),cy:y(yav),r:6,fill:'#ffb454',stroke:'#fff3d8','stroke-width':'1.5'}); const tip=document.createElementNS(NS,'title'); tip.textContent=`متوسط الجمهورية: ${M[xind].name} ${fmt(xav,xind)} | ${M[yind].name} ${fmt(yav,yind)}`; c.appendChild(tip);
+  }
+  R.forEach((r,i)=>{ const xv=r.vals[xind], yv=r.vals[yind]; if(!Number.isFinite(xv)||!Number.isFinite(yv))return; const cir=el('circle',{cx:x(xv),cy:y(yv),r:i===province?8:5,fill:i===province?'#1dd1c1':'#56a2ff',opacity:i===province?1:0.76,class:'dot'}); const tip=document.createElementNS(NS,'title'); tip.textContent=`${r.name}: ${M[xind].name} ${fmt(xv,xind)} | ${M[yind].name} ${fmt(yv,yind)}`; cir.appendChild(tip); cir.onclick=()=>selectProv(i); });
+}
+$('export').onclick=()=>{ const m=M[selected]; const avg=averageOf(selected); const csv=[['المحافظة',m.desc,'سنة البيانات'],['متوسط الجمهورية',avg,m.year],...ordered(selected).map(z=>[z.r.name,z.v,m.year])].map(a=>a.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n'); const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='مؤشرات_المحافظات_'+(selected+1)+'.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); };
+
+function compositeData(){
+ const exclude=false;
+ const allowed=(r,i)=>Number.isFinite(r.vals[i])&&(!exclude||!warn(r,i));
+ const ext=M.map((m,i)=>{
+  const arr=R.filter(r=>allowed(r,i)).map(r=>r.vals[i]);
+  return {min:Math.min(...arr),max:Math.max(...arr)};
+ });
+ function norm(r,i){
+  if(!allowed(r,i))return null;
+  const {min,max}=ext[i],v=r.vals[i];
+  if(max===min)return 50;
+  let n=(v-min)/(max-min)*100;
+  return Math.max(0,Math.min(100,M[i].better===-1?100-n:n));
+ }
+ const all=R.map((r,index)=>{
+  const components=M.map((_,i)=>norm(r,i));
+  const available=components.filter(v=>v!==null);
+  return {r,index,components,n:available.length,score:available.length?available.reduce((a,b)=>a+b,0)/available.length:0};
+ });
+ all.sort((a,b)=>b.score-a.score);
+ all.forEach((d,i)=>{d.rank=i+1;d.category=Math.min(5,Math.floor(i*5/all.length)+1)});
+ return all;
+}
+function compClass(cat){return ['','الأعلى نسبيًا','مرتفع','متوسط','منخفض','الأقل نسبيًا'][cat]}
+function drawComposite(){
+ const all=compositeData(),mine=all.find(d=>d.index===province),mean=all.reduce((a,b)=>a+b.score,0)/all.length;
+ $('comp-mean').textContent=mean.toFixed(1)+' / 100';
+ $('comp-best').textContent=all[0].r.name+' · '+all[0].score.toFixed(1);
+ $('comp-focus').textContent=mine.score.toFixed(1)+' / 100';
+ const bars=$('comp-bars');bars.replaceChildren();
+ all.forEach(d=>{
+  const row=document.createElement('div');row.className='composite-row'+(d.index===province?' active':'');
+  row.innerHTML='<span class="cn"></span><div class="cbar"><span></span></div><span class="composite-n"></span><span class="class-tag"></span>';
+  row.querySelector('.cn').textContent=d.rank+'. '+d.r.name;
+  row.querySelector('.cbar span').style.width=d.score+'%';
+  if(d.n<13)row.querySelector('.cbar span').className='warn-fill';
+  row.querySelector('.composite-n').textContent=d.score.toFixed(1);
+  row.querySelector('.class-tag').textContent=compClass(d.category);
+  row.title=d.r.name+' | '+d.n+' مؤشرات محتسبة';row.onclick=()=>selectProv(d.index);
+  bars.appendChild(row);
+ });
+ $('comp-summary').innerHTML='<strong>'+mine.r.name+'</strong> — الترتيب <strong>'+mine.rank+' من '+all.length+'</strong>، والفئة: <strong>'+compClass(mine.category)+'</strong>. الدرجة المركبة: <strong>'+mine.score.toFixed(1)+'/100</strong>، عدد المؤشرات المحتسبة: <strong>'+mine.n+'/13</strong>.';
+ const detail=$('comp-detail');detail.replaceChildren();
+ mine.components.forEach((v,i)=>{
+  const r=document.createElement('div');r.className='metric-row';
+  r.innerHTML='<span class="nam"></span><span class="raw"></span><div class="smalltrack"><i></i></div><span class="score"></span>';
+  r.querySelector('.nam').textContent=(i+1)+'. '+M[i].name;
+  r.querySelector('.raw').textContent=fmt(mine.r.vals[i],i)+(warn(mine.r,i)?' ⚠':'');
+  r.querySelector('.smalltrack i').style.width=(v===null?0:v)+'%';
+  r.querySelector('.score').textContent=v===null?'—':v.toFixed(1);
+  detail.appendChild(r);
+ });
+ const wrap=$('comp-heatmap');wrap.replaceChildren();const table=document.createElement('table');table.className='heatmap-table';
+ const head=document.createElement('thead'),htr=document.createElement('tr');
+ ['المحافظة',...M.map((m,i)=>(i+1)+'. '+m.name),'المركب'].forEach(t=>{const th=document.createElement('th');th.textContent=t;htr.appendChild(th)});head.appendChild(htr);table.appendChild(head);
+ const tb=document.createElement('tbody');
+ all.forEach(d=>{
+  const tr=document.createElement('tr');if(d.index===province)tr.className='chosen';
+  const name=document.createElement('td');name.textContent=d.r.name;name.style.cursor='pointer';name.onclick=()=>selectProv(d.index);tr.appendChild(name);
+  d.components.forEach((val,i)=>{
+   const cell=document.createElement('td');cell.textContent=val===null?'—':val.toFixed(0);
+   cell.title=M[i].name+': '+fmt(d.r.vals[i],i)+' | سنة البيانات '+M[i].year+(warn(d.r,i)?' | تحتاج مراجعة':'');
+   if(val!==null){const hue=Math.max(0,Math.min(125,val*1.25));cell.style.background='hsl('+hue+' 46% 25%)'}else cell.style.background='#26303d';
+   tr.appendChild(cell);
+  });
+  const score=document.createElement('td');score.textContent=d.score.toFixed(1);score.style.background='#253d49';score.style.fontWeight='800';tr.appendChild(score);tb.appendChild(tr);
+ });
+ table.appendChild(tb);wrap.appendChild(table);
+}
+$('comp-mode').onchange=drawComposite;
+$('comp-export').onclick=()=>{
+ const rows=[['الترتيب','المحافظة','الدرجة المركبة من 100','الفئة','عدد المؤشرات المحتسبة'],...compositeData().map(d=>[d.rank,d.r.name,d.score.toFixed(3),compClass(d.category),d.n])];
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');
+ const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='التصنيف_التنموي_المركب.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+const originalSelectProv=selectProv;
+selectProv=function(i){originalSelectProv(i);drawComposite()};
+$('prov').addEventListener('change',drawComposite);
+
+draw();drawComposite();
+</script>
+<script>
+const a$=id=>document.getElementById(id);
+const COLORS=['#23cbbb','#6fa8ff','#ffb85f','#dc82db','#e97585','#b0d36d'];
+const LOCS={
+'القاهرة':[31.24,30.05],'الإسكندرية':[29.94,31.2],'بورسعيد':[32.30,31.26],'السويس':[32.55,29.97],'دمياط':[31.82,31.38],'الدقهلية':[31.37,31.04],'الشرقية':[31.65,30.65],'القليوبية':[31.21,30.34],'كفر الشيخ':[30.85,31.11],'الغربية':[31.00,30.80],'المنوفية':[30.97,30.47],'البحيرة':[30.4,30.85],'الإسماعيلية':[32.28,30.58],'الجيزة':[30.50,29.88],'بني سويف':[31.1,29.1],'الفيوم':[30.87,29.30],'المنيا':[30.75,28.06],'أسيوط':[31.19,27.18],'سوهاج':[31.69,26.56],'قنا':[32.70,26.16],'اسوان':[32.9,24.1],'الأقصر':[32.64,25.72],'البحر الأحمر':[34.5,26.3],'الوادي الجديد':[27.5,25.25],'مطروح':[27.2,31.2],'شمال سيناء':[33.75,30.9],'جنوب سيناء':[33.55,28.4]};
+const useVal=(r,j)=>r.vals[j];
+const arr=(j)=>R.map((r,i)=>({r,i,v:useVal(r,j)})).filter(x=>Number.isFinite(x.v));
+const mean=v=>v.length?v.reduce((a,b)=>a+b,0)/v.length:NaN;
+const stdev=v=>v.length>1?Math.sqrt(v.reduce((a,b)=>a+(b-mean(v))**2,0)/(v.length-1)):NaN;
+const quant=(v,q)=>{if(!v.length)return NaN;let a=[...v].sort((x,y)=>x-y),p=(a.length-1)*q,i=Math.floor(p);return a[i]+(a[Math.min(i+1,a.length-1)]-a[i])*(p-i)};
+const format=(n,j)=>fmt(n,j);
+const svgEl=(parent,tag,attrs={},content)=>{const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);if(content!==undefined)e.textContent=content;parent.appendChild(e);return e;};
+function pearson(j,k){const pts=R.map(r=>[useVal(r,j),useVal(r,k)]).filter(p=>p.every(Number.isFinite));if(pts.length<4)return {r:NaN,n:pts.length};const x=pts.map(p=>p[0]),y=pts.map(p=>p[1]),mx=mean(x),my=mean(y),nx=x.map(z=>z-mx),ny=y.map(z=>z-my);const den=Math.sqrt(nx.reduce((a,z)=>a+z*z,0)*ny.reduce((a,z)=>a+z*z,0));return {r:den?nx.reduce((a,z,i)=>a+z*ny[i],0)/den:NaN,n:pts.length};}
+function drawCorr(){const host=a$('corr-grid');host.replaceChildren();const grid=document.createElement('div');grid.className='corr-grid';const stub=document.createElement('div');grid.appendChild(stub);M.forEach((m,i)=>{const h=document.createElement('div');h.className='corr-head';h.textContent=(i+1)+' '+m.name;grid.appendChild(h)});M.forEach((m,j)=>{const head=document.createElement('div');head.className='corr-row';head.textContent=(j+1)+' '+m.name;grid.appendChild(head);M.forEach((n,k)=>{const p=pearson(j,k),cell=document.createElement('button');cell.type='button';cell.className='corr-cell'+(j===k?' diagonal':'');const t=p.r;const h=Number.isFinite(t)?(t>=0?178:350):0;cell.style.background=Number.isFinite(t)?`hsla(${h},58%,${16+Math.abs(t)*25}%,.95)`:'#202634';cell.textContent=Number.isFinite(t)?t.toFixed(2):'—';cell.title=`${m.name} × ${n.name} | n=${p.n}`;cell.onclick=()=>a$('corr-detail').textContent=`${m.name} × ${n.name}: معامل بيرسون r = ${Number.isFinite(t)?t.toFixed(3):'غير قابل للحساب'}، عدد المحافظات المشتركة = ${p.n}. ${j===k?'هذه علاقة المؤشر بنفسه.':'الارتباط لا يعني وجود علاقة سببية.'}`;grid.appendChild(cell);});});host.appendChild(grid);a$('corr-detail').textContent='اختر خلية في المصفوفة لعرض تفاصيل علاقة المؤشرين وعدد المحافظات الداخلة في الحساب.';}
+function normalized(j,v){const xs=arr(j).map(x=>x.v);const lo=Math.min(...xs),hi=Math.max(...xs);if(!Number.isFinite(v)||!xs.length)return NaN;if(hi===lo)return 50;const z=(v-lo)/(hi-lo);return 100*(M[j].better===-1?1-z:z);}
+function scorevec(r){return M.map((m,j)=>normalized(j,useVal(r,j)));}
+function kmeans(k){let v=R.map(r=>scorevec(r));const meds=M.map((m,j)=>quant(v.map(row=>row[j]).filter(Number.isFinite),.5));v=v.map(row=>row.map((x,j)=>Number.isFinite(x)?x:meds[j]));const mu=M.map((_,j)=>mean(v.map(row=>row[j]))),sd=M.map((_,j)=>stdev(v.map(row=>row[j]))||1);const z=v.map(row=>row.map((x,j)=>(x-mu[j])/sd[j]));let centers= [z[0]];const dist=(a,b)=>a.reduce((s,x,j)=>s+(x-b[j])**2,0);for(let n=1;n<k;n++){let best=0,max=-1;z.forEach((row,i)=>{let md=Math.min(...centers.map(c=>dist(row,c)));if(md>max){max=md;best=i}});centers.push(z[best]);}let assign=[];for(let t=0;t<80;t++){const next=z.map(row=>centers.reduce((best,c,j)=>dist(row,c)<dist(row,centers[best])?j:best,0));if(next.every((n,i)=>n===assign[i]))break;assign=next;centers=centers.map((c,j)=>{const members=z.filter((r,i)=>assign[i]===j);return members.length?c.map((_,m)=>mean(members.map(r=>r[m]))):c;});}const score=v.map(row=>mean(row));const groups=Array.from({length:k},(_,j)=>({id:j,names:R.filter((r,i)=>assign[i]===j).map(r=>r.name),avg:mean(score.filter((_,i)=>assign[i]===j))})).sort((a,b)=>b.avg-a.avg);const ranks=Object.fromEntries(groups.map((g,i)=>[g.id,i]));return {assign,groups,ranks};}
+function drawClusters(){const k=+a$('cluster-k').value,z=kmeans(k),host=a$('cluster-cards');host.replaceChildren();z.groups.forEach((g,t)=>{const card=document.createElement('div');card.className='cluster-card';const h=document.createElement('h4');h.innerHTML=`<span class="cluster-dot" style="background:${COLORS[t]}"></span>المجموعة ${t+1} · ${g.names.length} محافظة · متوسط درجة ${g.avg.toFixed(1)} / 100`;card.appendChild(h);const names=document.createElement('div');names.className='cluster-names';names.textContent=g.names.join(' · ');card.appendChild(names);host.appendChild(card)});const g=z.groups[z.ranks[z.assign[province]]];a$('cluster-selected').textContent=`${R[province].name}: تقع ضمن المجموعة ${z.ranks[z.assign[province]]+1} التي تضم ${g.names.length} محافظة. متوسط درجات أعضاء هذه المجموعة ${g.avg.toFixed(1)} من 100. لون المجموعة في الخريطة لا يُستخدم تلقائيًا عند اختيار مؤشر مستقل.`;}
+function getComposite(){return compositeData();}
+const coords=r=>LOCS[r.name]||[31,29];
+function drawMap(){const svg=a$('geo-svg');svg.replaceChildren();const W=680,H=560,x=lon=>52+(lon-24.3)/(36.8-24.3)*570,y=lat=>30+(31.8-lat)/(31.8-21.7)*495;const bg=svgEl(svg,'rect',{x:0,y:0,width:W,height:H,fill:'transparent'});for(let lon=25;lon<=36;lon+=2){svgEl(svg,'line',{x1:x(lon),x2:x(lon),y1:30,y2:530,stroke:'#1a2a3d','stroke-dasharray':'3 7'});}for(let lat=22;lat<=31;lat+=2){svgEl(svg,'line',{x1:50,x2:630,y1:y(lat),y2:y(lat),stroke:'#1a2a3d','stroke-dasharray':'3 7'});}svgEl(svg,'text',{x:338,y:548,'text-anchor':'middle'},'مخطط مكاني نقطي تقريبي (خطوط العرض والطول)');const sel=a$('map-ind').value;const scores=getComposite();let arrv=R.map((r,i)=>sel==='composite'?scores.find(z=>z.index===i).score:useVal(r,+sel)),finite=arrv.filter(Number.isFinite),lo=Math.min(...finite),hi=Math.max(...finite);const color=v=>Number.isFinite(v)?`hsl(${195-(v-lo)/(hi-lo||1)*155} 73% 52%)`:'#475569';R.forEach((r,i)=>{const [lon,lat]=coords(r),val=arrv[i],node=svgEl(svg,'circle',{cx:x(lon),cy:y(lat),r:i===province?12:8,fill:color(val),stroke:i===province?'#ffffff':'#111827','stroke-width':i===province?3:1.4});const tip=svgEl(node,'title',{},`${r.name} · ${sel==='composite'?'المؤشر المركب':M[+sel].name}: ${sel==='composite'?(Number.isFinite(val)?val.toFixed(1)+'/100':'غير متاح'):format(val,+sel)}`);node.onclick=()=>selectProv(i);});const l=a$('map-legend');l.replaceChildren();[0,.25,.5,.75,1].forEach(p=>{const el=document.createElement('span');el.innerHTML=`<b style="background:${color(lo+p*(hi-lo))}"></b>${sel==='composite'?(lo+p*(hi-lo)).toFixed(1):format(lo+p*(hi-lo),+sel)}`;l.appendChild(el)});const v=arrv[province];a$('map-selected').textContent=`${R[province].name} ـ ${sel==='composite'?'الدرجة المركبة':M[+sel].name}: ${sel==='composite'?(Number.isFinite(v)?v.toFixed(1)+' / 100':'غير متاح'):format(v,+sel)}. انقر على أي نقطة بالخريطة لتغيير المحافظة المحددة في جميع التحليلات.`;}
+function polygonPoints(points,cx,cy,rad){return points.map((v,j)=>{const a=-Math.PI/2+j*2*Math.PI/13;return `${(cx+Math.cos(a)*rad*v/100).toFixed(1)},${(cy+Math.sin(a)*rad*v/100).toFixed(1)}`}).join(' ');}
+function drawRadar(){const svg=a$('radar-svg');svg.replaceChildren();const cx=340,cy=227,radius=158;for(let t=20;t<=100;t+=20){const z=Array.from({length:13},()=>t);svgEl(svg,'polygon',{points:polygonPoints(z,cx,cy,radius),fill:'none',stroke:'#25384a','stroke-width':1});}M.forEach((m,j)=>{const a=-Math.PI/2+j*2*Math.PI/13,rx=cx+Math.cos(a)*radius,ry=cy+Math.sin(a)*radius;svgEl(svg,'line',{x1:cx,y1:cy,x2:rx,y2:ry,stroke:'#2c4051'});svgEl(svg,'text',{x:cx+Math.cos(a)*197,y:cy+Math.sin(a)*193,'text-anchor':'middle','font-size':10,fill:'#d4e4f3'},`${j+1}`)});const mineRaw=scorevec(R[province]),mine=mineRaw.map((v,j)=>Number.isFinite(v)?v:mean(R.map(r=>normalized(j,useVal(r,j))).filter(Number.isFinite))),otherSelect=a$('profile-other').value;const other=otherSelect==='average'?M.map((_,j)=>mean(R.map(r=>normalized(j,useVal(r,j))).filter(Number.isFinite))):scorevec(R[+otherSelect]).map(v=>Number.isFinite(v)?v:0);svgEl(svg,'polygon',{points:polygonPoints(other,cx,cy,radius),fill:'rgba(255,184,95,.12)',stroke:'#ffb85f','stroke-width':2});svgEl(svg,'polygon',{points:polygonPoints(mine,cx,cy,radius),fill:'rgba(29,209,193,.20)',stroke:'#1dd1c1','stroke-width':2.5});svgEl(svg,'text',{x:20,y:23,fill:'#1dd1c1','font-size':12},'● '+R[province].name);svgEl(svg,'text',{x:20,y:45,fill:'#ffb85f','font-size':12},'● '+(otherSelect==='average'?'متوسط المحافظات':R[+otherSelect].name));const diffs=mine.map((v,j)=>({j,delta:v-other[j]})).filter(z=>Number.isFinite(z.delta)).sort((a,b)=>b.delta-a.delta);a$('radar-summary').textContent=`${R[province].name} · متوسط الأداء المعياري: ${mean(mine).toFixed(1)} / 100. أقوى فارق إيجابي بالمؤشر «${M[diffs[0].j].name}» (+${diffs[0].delta.toFixed(1)} نقطة)، وأكبر فارق سلبي بالمؤشر «${M[diffs.at(-1).j].name}» (${diffs.at(-1).delta.toFixed(1)} نقطة). الأرقام داخل الرادار تمثل المؤشرات 1 إلى 13 بالترتيب.`;a$('radar-breakdown').innerHTML=M.map((m,j)=>`<div style="display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #253142;padding:6px 0;font-size:11px"><span>${j+1}. ${m.name}</span><span>${Number.isFinite(mine[j])?mine[j].toFixed(0):'—'} / ${other[j].toFixed(0)}</span></div>`).join('');}
+function drawDist(){const j=+a$('dist-ind').value,z=arr(j),v=z.map(o=>o.v),q1=quant(v,.25),q2=quant(v,.5),q3=quant(v,.75),iqr=q3-q1,lo=quant(v,0),hi=quant(v,1),lower=q1-1.5*iqr,upper=q3+1.5*iqr;const out=z.filter(o=>o.v<lower||o.v>upper),within=z.filter(o=>o.v>=lower&&o.v<=upper).map(o=>o.v),wlo=Math.min(...within),whi=Math.max(...within),av=mean(v),sd=stdev(v);const svg=a$('box-svg');svg.replaceChildren();const X=x=>60+(x-lo)/(hi-lo||1)*610,Y=126;[0,.25,.5,.75,1].forEach(p=>{const val=lo+p*(hi-lo);const xx=X(val);svgEl(svg,'line',{x1:xx,y1:55,x2:xx,y2:205,stroke:'#243349'});svgEl(svg,'text',{x:xx,y:224,'text-anchor':'middle',fill:'#b4c6da','font-size':12},format(val,j));});svgEl(svg,'line',{x1:X(wlo),y1:Y,x2:X(whi),y2:Y,stroke:'#69a9ef','stroke-width':3});svgEl(svg,'line',{x1:X(wlo),y1:108,x2:X(wlo),y2:145,stroke:'#69a9ef','stroke-width':3});svgEl(svg,'line',{x1:X(whi),y1:108,x2:X(whi),y2:145,stroke:'#69a9ef','stroke-width':3});svgEl(svg,'rect',{x:X(q1),y:95,width:Math.max(1,X(q3)-X(q1)),height:63,fill:'#164955',stroke:'#1dd1c1','stroke-width':2,rx:4});svgEl(svg,'line',{x1:X(q2),y1:95,x2:X(q2),y2:158,stroke:'#ffd17b','stroke-width':3});svgEl(svg,'line',{x1:X(av),y1:55,x2:X(av),y2:198,stroke:'#ff8bb3','stroke-dasharray':'5 4','stroke-width':2});out.forEach((o,i)=>{const c=svgEl(svg,'circle',{cx:X(o.v),cy:Y+(i%3-1)*12,r:6,fill:'#ff7587'});svgEl(c,'title',{},o.r.name+' '+format(o.v,j));});svgEl(svg,'text',{x:55,y:32,fill:'#ff8bb3','font-size':12},`المتوسط الحسابي: ${format(av,j)}`);a$('dist-stats').textContent=`عدد المحافظات = ${v.length} | المتوسط = ${format(av,j)} | الوسيط = ${format(q2,j)} | الربيع الأول = ${format(q1,j)} | الربيع الثالث = ${format(q3,j)} | الانحراف المعياري = ${format(sd,j)} | معامل الاختلاف = ${av?((sd/Math.abs(av))*100).toFixed(1)+'%':'غير معرف'} | المدى الربيعي IQR = ${format(iqr,j)}.`;a$('dist-outliers').textContent=out.length?`القيم المتطرفة وفق قاعدة 1.5×IQR: ${out.map(o=>o.r.name+' ('+format(o.v,j)+')').join('، ')}`:'لا توجد قيم متطرفة وفق قاعدة 1.5×IQR لهذا المؤشر.';}
+M.forEach((m,j)=>{a$('dist-ind').append(option((j+1)+'. '+m.name,j));a$('map-ind').append(option((j+1)+'. '+m.name,j));});R.forEach((r,j)=>a$('profile-other').append(option(r.name,j)));
+a$('dist-ind').value=9;a$('cluster-k').onchange=drawClusters;a$('map-ind').onchange=drawMap;a$('profile-other').onchange=drawRadar;a$('dist-ind').onchange=drawDist;
+a$('adv-exclude').onchange=()=>{drawCorr();drawClusters();drawMap();drawRadar();drawDist();};
+$('comp-mode').addEventListener('change',drawMap);
+$('prov').addEventListener('change',()=>{drawClusters();drawMap();drawRadar()});
+// Global synchronized selections, including clicks in the original comparison charts.
+const previousSelectProv=selectProv;
+selectProv=function(i){previousSelectProv(i);drawClusters();drawMap();drawRadar();};
+drawCorr();drawClusters();drawMap();drawRadar();drawDist();
+</script><script>
+(function(){
+ const U=id=>document.getElementById(id);
+ const values=i=>R.map(r=>({name:r.name,v:r.vals[i],r})).filter(x=>Number.isFinite(x.v)).map(x=>x.v);
+ const convert=(v,i)=>M[i].percent?v*100:v;
+ const format=(v,i,precision=2)=>Number.isFinite(v)?(convert(v,i).toLocaleString('ar-EG',{maximumFractionDigits:precision})+(M[i].percent?'%':'')):'—';
+ const plain=(v,p=2)=>Number.isFinite(v)?v.toLocaleString('ar-EG',{maximumFractionDigits:p}):'—';
+ const quant=(a,q)=>{const z=(a.length-1)*q,l=Math.floor(z),h=Math.ceil(z);return a[l]+(a[h]-a[l])*(z-l)};
+ function stats(i){
+   const a=values(i).sort((x,y)=>x-y),n=a.length;if(!n)return null;
+   const mean=a.reduce((x,y)=>x+y,0)/n, med=quant(a,.5), q1=quant(a,.25),q3=quant(a,.75);
+   const variance=n>1?a.reduce((v,x)=>v+(x-mean)**2,0)/(n-1):0, sd=Math.sqrt(variance);
+   const pop2=a.reduce((z,x)=>z+(x-mean)**2,0)/n;
+   const skew=pop2? a.reduce((z,x)=>z+(x-mean)**3,0)/n/Math.pow(pop2,1.5):0;
+   const kurt=pop2?a.reduce((z,x)=>z+(x-mean)**4,0)/n/(pop2**2)-3:0;
+   const cv=mean?sd/Math.abs(mean)*100:NaN;
+   const freq=new Map();a.forEach(x=>freq.set(x,(freq.get(x)||0)+1));
+   const maxFreq=Math.max(...freq.values());const modes=maxFreq>=2?[...freq].filter(([k,c])=>c===maxFreq).map(([k])=>k):[];
+   const jb=n/6*(skew**2+kurt**2/4),pv=Math.exp(-jb/2);
+   return {a,n,mean,med,q1,q3,min:a[0],max:a[n-1],variance,sd,skew,kurt,cv,modes,maxFreq,jb,pv};
+ }
+ function modeLabel(st,i){return st.modes.length?st.modes.slice(0,3).map(v=>format(v,i)).join('، ')+(st.modes.length>3?'…':''):'لا يوجد منوال'};
+ const labels=[['عدد المحافظات','n'],['المتوسط الحسابي | Mean','mean'],['الوسيط | Median','med'],['المنوال | Mode','mode'],['أقل قيمة','min'],['أعلى قيمة','max'],['الانحراف المعياري','sd'],['معامل الاختلاف','cv'],['الالتواء | Skewness','skew'],['التفرطح الزائد | Kurtosis','kurt'],['المدى الربيعي | IQR','iqr'],['قيمة p لاختبار Jarque–Bera','pv']];
+ M.forEach((m,i)=>U('uni-ind').append(option(`${i+1}. ${m.name}`,i)));
+ U('uni-ind').value='0';
+ function drawHist(st,i){
+  const svg=U('uni-hist');svg.replaceChildren();if(!st)return;
+  const ns='http://www.w3.org/2000/svg',W=780,H=355,left=67,right=18,top=23,bottom=62;
+  const E=(tag,attrs={},text)=>{const e=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));if(text!==undefined)e.textContent=text;svg.appendChild(e);return e};
+  let min=st.min,max=st.max,range=max-min;if(range===0){range=Math.abs(min)*.1||1;min-=range/2;max+=range/2}
+  const bins=+U('uni-bins').value, width=(max-min)/bins;
+  const counts=Array(bins).fill(0);st.a.forEach(v=>counts[Math.min(bins-1,Math.max(0,Math.floor((v-min)/width)))]++);
+  const maxN=Math.max(...counts,1),scale=x=>left+(x-min)/(max-min)*(W-left-right);
+  for(let j=0;j<=4;j++){let cy=H-bottom-(H-top-bottom)*j/4;E('line',{x1:left,y1:cy,x2:W-right,y2:cy,stroke:'#263648'});E('text',{x:left-12,y:cy+4,'text-anchor':'end',class:'uni-chart-text'},String(Math.round(maxN*j/4)))}
+  counts.forEach((c,j)=>{let x=left+j*(W-left-right)/bins+2,barw=(W-left-right)/bins-4,h=(H-top-bottom)*(c/maxN);E('rect',{x,y:H-bottom-h,width:barw,height:h,rx:4,fill:'#5b97df',opacity:.85});E('text',{x:x+barw/2,y:H-bottom-h-7,'text-anchor':'middle',class:'uni-chart-text'},String(c));E('text',{x:x+barw/2,y:H-bottom+19,'text-anchor':'middle',class:'uni-chart-text'},plain(convert(min+width*(j+.5),i),1));});
+  for(const [val,col,tag] of [[st.mean,'#ffb454','المتوسط'],[st.med,'#1dd1c1','الوسيط']]){let x=scale(val);E('line',{x1:x,y1:top,x2:x,y2:H-bottom,stroke:col,'stroke-width':2,'stroke-dasharray':tag==='الوسيط'?'7 4':'none'});}
+  E('text',{x:W/2,y:H-8,'text-anchor':'middle',class:'uni-chart-text'},M[i].desc+(M[i].percent?' (نقاط مئوية)':''));
+  U('uni-legend').textContent=`البرتقالي: المتوسط ${format(st.mean,i)} · التركوازي: الوسيط ${format(st.med,i)} · عدد المحافظات: ${st.n}`;
+ }
+ function draw(){
+  const i=+U('uni-ind').value,st=stats(i);if(!st)return;
+  U('uni-stats').replaceChildren();
+  labels.forEach(([name,key])=>{let v;
+    if(key==='n')v=String(st.n);else if(key==='mode')v=modeLabel(st,i);else if(key==='iqr')v=format(st.q3-st.q1,i);else if(key==='cv')v=plain(st.cv,1)+'%';else if(['skew','kurt'].includes(key))v=plain(st[key],3);else if(key==='pv')v=plain(st.pv,4);else v=format(st[key],i);
+    const d=document.createElement('div');d.className='uni-card';const l=document.createElement('div');l.className='lab';l.textContent=name;const z=document.createElement('div');z.className='val';z.style.fontSize=key==='mode'?'15px':'22px';z.textContent=v;d.append(l,z);U('uni-stats').appendChild(d);
+  });
+  drawHist(st,i);
+  U('uni-reading').textContent=`${M[i].name}: المتوسط ${format(st.mean,i)} مقابل الوسيط ${format(st.med,i)}. الالتواء ${plain(st.skew,3)} (${st.skew>.5?'ميل نحو القيم المرتفعة':st.skew<-.5?'ميل نحو القيم المنخفضة':'قريب من التماثل نسبيًا'}). التفرطح الزائد ${plain(st.kurt,3)}. اختبار Jarque–Bera التقريبي: JB=${plain(st.jb,3)}، p=${plain(st.pv,4)}؛ ${st.pv<.05?'توجد إشارة لعدم اتباع التوزيع الطبيعي وفق هذا الاختبار.':'لا تتوافر أدلة كافية لرفض الاعتدال وفق هذا الاختبار.'}`;
+  U('uni-mode-note').textContent=st.modes.length?`المنوال: ${modeLabel(st,i)} (تكررت كل قيمة ${st.maxFreq} مرات). تكرار القيم بعد التقريب في المصدر قد يرفع عدد المنوالات، خصوصًا النسب القريبة من 100%.`:'لا يوجد منوال واضح لهذا المؤشر؛ جميع القيم المسجلة مختلفة. لا يصح اختيار قيمة منوالية اعتباطيًا.';
+  const tbody=U('uni-table-body');tbody.replaceChildren();M.forEach((m,j)=>{const x=stats(j);if(!x)return;const tr=document.createElement('tr');if(i===j)tr.className='active';[m.name,String(x.n),format(x.mean,j),format(x.med,j),modeLabel(x,j),format(x.sd,j),plain(x.cv,1)+'%',plain(x.skew,2),plain(x.kurt,2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.appendChild(td)});tr.onclick=()=>{U('uni-ind').value=String(j);draw()};tbody.appendChild(tr)});
+ }
+ U('uni-ind').onchange=draw;U('uni-bins').onchange=draw;window.refreshUnivariate=draw;draw();
+})();
+</script>
+<script>
+(function(){
+'use strict';
+const SOURCE_BASE64='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';
+const R0=R.map(r=>({id:r.id,name:r.name,vals:[...r.vals]}));
+const status=document.getElementById('excel-status');
+const setStatus=(message,error=false)=>{status.textContent=message;status.classList.toggle('error',error);};
+const dataBytes=()=>Uint8Array.from(atob(SOURCE_BASE64),c=>c.charCodeAt(0));
+const normalize=s=>String(s||'').trim().replace(/[\u064b-\u065f]/g,'').replace(/[أإآ]/g,'ا').replace(/[ىي]/g,'ي').replace(/\s+/g,' ');
+const fileReader=f=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(new Uint8Array(reader.result));reader.onerror=()=>reject(new Error('تعذر قراءة الملف'));reader.readAsArrayBuffer(f);});
+const readU16=(d,p)=>d[p]|(d[p+1]<<8);
+const readU32=(d,p)=>(d[p]|d[p+1]<<8|d[p+2]<<16|d[p+3]<<24)>>>0;
+const decode=bytes=>new TextDecoder('utf-8').decode(bytes);
+const unzip=async(bytes)=>{
+  // Read the ZIP central directory so the reader also supports descriptor-based XLSX files.
+  let end=-1;for(let i=bytes.length-22;i>=Math.max(0,bytes.length-65557);i--){if(readU32(bytes,i)===0x06054b50){end=i;break;}}
+  if(end<0)throw Error('الملف ليس Excel بصيغة XLSX صحيحة');
+  const count=readU16(bytes,end+10),offset=readU32(bytes,end+16),entries=new Map();let p=offset;
+  for(let i=0;i<count;i++){
+    if(readU32(bytes,p)!==0x02014b50)throw Error('تعذر قراءة بنية ملف Excel');
+    const method=readU16(bytes,p+10),packed=readU32(bytes,p+20),nameLen=readU16(bytes,p+28),extraLen=readU16(bytes,p+30),commentLen=readU16(bytes,p+32),local=readU32(bytes,p+42),name=decode(bytes.slice(p+46,p+46+nameLen));
+    entries.set(name,{method,packed,local});p+=46+nameLen+extraLen+commentLen;
+  }
+  const read=async(name)=>{
+    const entry=entries.get(name);if(!entry)return null;
+    const off=entry.local;if(readU32(bytes,off)!==0x04034b50)throw Error('تلف في ملف Excel');
+    const start=off+30+readU16(bytes,off+26)+readU16(bytes,off+28);
+    const chunk=bytes.slice(start,start+entry.packed);
+    if(entry.method===0)return decode(chunk);
+    if(entry.method!==8)throw Error('صيغة الضغط في Excel غير مدعومة');
+    if(typeof DecompressionStream==='undefined')throw Error('المتصفح لا يدعم فتح Excel محليًا؛ استخدم Chrome أو Edge حديثًا');
+    const stream=new Blob([chunk]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return decode(new Uint8Array(await new Response(stream).arrayBuffer()));
+  };
+  return {read,entries};
+};
+const parseXML=(s)=>{const x=new DOMParser().parseFromString(s,'text/xml');if(x.querySelector('parsererror'))throw Error('تعذر تفسير خلايا Excel');return x;};
+const tag=(e,n)=>Array.from(e.getElementsByTagName('*')).filter(x=>x.localName===n);
+const direct=(e,n)=>Array.from(e.children||[]).find(x=>x.localName===n);
+const excelCol=ref=>{const letters=(ref.match(/^[A-Z]+/)||[''])[0];let n=0;for(const c of letters)n=n*26+c.charCodeAt(0)-64;return n-1;};
+async function parseWorkbook(bytes){
+ const zip=await unzip(bytes);
+ const workbook=await zip.read('xl/workbook.xml');if(!workbook)throw Error('لا يوجد دفتر Excel صالح');
+ const wbxml=parseXML(workbook),sheets=tag(wbxml,'sheet'),sheet=sheets.find(e=>['sheet1','البيانات'].includes(normalize(e.getAttribute('name')).toLowerCase()))||sheets[0];
+ if(!sheet)throw Error('ملف Excel لا يحتوي على ورقة بيانات');
+ const relationships=await zip.read('xl/_rels/workbook.xml.rels');
+ const rels=relationships?tag(parseXML(relationships),'Relationship'):[];
+ const rid=sheet.getAttribute('r:id')||sheet.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');
+ const rel=rels.find(e=>e.getAttribute('Id')===rid);
+ let path=rel?.getAttribute('Target')||'worksheets/sheet1.xml';
+ path=path.startsWith('/')?path.slice(1):(path.startsWith('xl/')?path:'xl/'+path);
+ const xmltext=await zip.read(path);if(!xmltext)throw Error('تعذر العثور على ورقة البيانات داخل Excel');
+ const sharedText=await zip.read('xl/sharedStrings.xml');
+ const shared=sharedText?tag(parseXML(sharedText),'si').map(si=>tag(si,'t').map(x=>x.textContent).join('')):[];
+ const xml=parseXML(xmltext);
+ const rows=[];
+ for(const row of tag(xml,'row')){
+   const values=[];
+   for(const cell of Array.from(row.children).filter(e=>e.localName==='c')){
+     const col=excelCol(cell.getAttribute('r')||'');if(col<0)continue;
+     const type=cell.getAttribute('t'),v=direct(cell,'v'),inline=direct(cell,'is');
+     let val=type==='inlineStr'?(inline?tag(inline,'t').map(x=>x.textContent).join(''):''):(v?v.textContent:'');
+     if(type==='s')val=shared[Number(val)]??'';
+     else if(type==='b')val=val==='1';
+     else if(type!=='str'&&type!=='e'&&type!=='inlineStr'&&val!==''&&Number.isFinite(Number(val)))val=Number(val);
+     values[col]=val;
+   }
+   rows.push(values);
+ }
+ return rows;
+}
+const readRecords=rows=>{
+  const known=new Map(R0.map(r=>[normalize(r.name),r]));
+  // Supports the original structure: first two header rows, province in column B, 13 indicators in C:O.
+  const header=rows.findIndex(row=>row.some(x=>normalize(x)==='المحافظة'));
+  if(header<0)throw Error('عمود «المحافظة» غير موجود في ملف Excel');
+  const provinceCol=rows[header].findIndex(x=>normalize(x)==='المحافظة');
+  if(provinceCol<0)throw Error('تعذر تحديد عمود المحافظة');
+  const results=new Map();
+  const percentIndices=new Set(M.map((m,i)=>m.percent?i:-1));
+  for(const row of rows.slice(header+1)){
+    const key=normalize(row[provinceCol]);if(!known.has(key))continue;
+    if(results.has(key))throw Error('اسم المحافظة مكرر: '+row[provinceCol]);
+    const vals=[];
+    for(let i=0;i<13;i++){
+      let n=row[provinceCol+1+i];
+      if(typeof n==='string'){
+        const wasPercent=n.includes('%')||n.includes('٪');
+        n=Number(n.replace(/[,%٪\s]/g,''));if(wasPercent)n/=100;
+      }
+      if(!Number.isFinite(n))throw Error('قيمة ناقصة أو غير رقمية عند '+row[provinceCol]+' في المؤشر رقم '+(i+1));
+      if(percentIndices.has(i)&&n>1)n/=100;
+      if(percentIndices.has(i)&&(n<0||n>1))throw Error('نسبة غير صحيحة عند '+row[provinceCol]+' في المؤشر '+(i+1));
+      vals.push(n);
+    }
+    results.set(key,vals);
+  }
+  const missing=R0.filter(r=>!results.has(normalize(r.name)));
+  if(missing.length)throw Error('الملف ناقص '+missing.length+' محافظة: '+missing.map(r=>r.name).join('، '));
+  return R0.map(r=>({id:r.id,name:r.name,vals:results.get(normalize(r.name))}));
+};
+const refresh=()=>{
+  draw();drawComposite();drawCorr();drawClusters();drawMap();drawRadar();drawDist();
+  if(typeof window.refreshUnivariate==='function')window.refreshUnivariate();
+};
+const apply=(records)=>{
+  if(records.length!==27||records.some(r=>r.vals.length!==13||r.vals.some(v=>!Number.isFinite(v))))throw Error('يجب إدخال قيم المؤشرات الـ13 لكل المحافظات الـ27');
+  R.splice(0,R.length,...records);
+  for(const name of Object.keys(FLAGS))delete FLAGS[name];
+  refresh();
+};
+const save=(records,name)=>{
+  try{localStorage.setItem('egypt_sdg_dashboard_data_v3',JSON.stringify({records,name}));return true;}
+  catch(e){return false;}
+};
+const input=document.getElementById('excel-upload');
+input.addEventListener('change',async()=>{
+  const f=input.files?.[0];if(!f)return;
+  setStatus('جاري قراءة الملف وفحص القيم…');
+  try{
+    const rows=await parseWorkbook(await fileReader(f));
+    const result=readRecords(rows);
+    apply(result);
+    const persisted=save(result,f.name);
+    setStatus('✓ تم تحديث جميع التحليلات من: '+f.name+' · 27 محافظة × 13 مؤشرًا'+(persisted?' · محفوظ لهذا المتصفح':' · يرجى إعادة رفع الملف عند فتح الصفحة مجددًا'));
+  }catch(e){setStatus('تعذر تحديث البيانات: '+e.message,true);}
+  input.value='';
+});
+document.getElementById('excel-download').onclick=()=>{
+  const blob=new Blob([dataBytes()],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='بيانات_المحافظات_27_المؤشرات_13.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+};
+document.getElementById('excel-reset').onclick=()=>{
+  apply(R0.map(r=>({...r,vals:[...r.vals]})));
+  try{localStorage.removeItem('egypt_sdg_dashboard_data_v3');}catch(e){}
+  setStatus('✓ تمت استعادة ملف البيانات الأساسي · 27 محافظة × 13 مؤشرًا');
+};
+try{
+ const saved=JSON.parse(localStorage.getItem('egypt_sdg_dashboard_data_v3')||'null');
+ if(saved?.records?.length===27){apply(saved.records);setStatus('✓ بيانات محمّلة من آخر تحديث: '+saved.name+' · 27 محافظة × 13 مؤشرًا');}
+}catch(e){setStatus('البيانات الأصلية جاهزة · 27 محافظة × 13 مؤشرًا');}
+})();
+</script>
+</body>
+</html>
